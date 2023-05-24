@@ -6,6 +6,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 
 import productRoutes from "./routes/Product.routes.js";
+import userRoutes from "./routes/User.routes.js";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
 
 // Load env variables
@@ -27,7 +28,9 @@ app.get("/", (req, res) => {
 });
 
 // Routes
+app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/products", productRoutes);
+
 
 // Error middlewares
 app.use(notFound);

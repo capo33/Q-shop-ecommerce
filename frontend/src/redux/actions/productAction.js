@@ -24,3 +24,25 @@ export const getProducts = () => async (dispatch) => {
     });
   }
 };
+
+// Get a single product
+export const getProductDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.PRODUCT_DETAILS_REQUEST });
+
+    const { data } = await axios.get(`${API}/api/v1/products/${id}`);
+
+    dispatch({
+      type: actionTypes.PRODUCT_DETAILS_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionTypes.PRODUCT_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}

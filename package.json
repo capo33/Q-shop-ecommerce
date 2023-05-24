@@ -1,0 +1,17 @@
+{
+  "name": "q-shop-ecommerce",
+  "version": "1.0.0",
+  "description": "Mern shoping cart app",
+  "main": "server.js",
+  "repository": "https://github.com/capo33/Q-shop-ecommerce.git",
+  "author": "mohamed <s2000588@edu.bc.fi>",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.2.0"
+  }
+}

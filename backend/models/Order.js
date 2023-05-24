@@ -12,7 +12,7 @@ const orderSchema = new Schema(
     orderItems: [
       {
         name: { type: String, required: true },
-        qty: { type: Number, required: true },
+        qty: { type: Number, required: true }, // qty = quantity
         image: { type: String, required: true },
         price: { type: Number, required: true },
         product: {
@@ -32,6 +32,7 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
+    // PayPal response data
     paymentResult: {
       id: { type: String },
       status: { type: String },

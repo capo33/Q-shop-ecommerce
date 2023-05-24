@@ -4,7 +4,9 @@ import colors from "colors";
 import cors from "cors";
 
 import connectDB from "./config/db.js";
-import products from "./data/products.js";
+
+import productRoutes from "./routes/Product.routes.js";
+import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
 
 // Load env variables
 dotenv.config();
@@ -21,18 +23,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send("Server is ready");
+  res.json({ message: "API is running..." });
 });
 
-app.get("/api/v1/products", (req, res) => {
-  res.json(products);
-});
+// Routes
+app.use("/api/v1/products", productRoutes);
 
-app.get("/api/v1/products/:id", (req, res) => {
-  const product = products.find((p) => p._id === req.params.id);
-  res.json(product);
-});
+// Error middlewares
+app.use(notFound);
+app.use(errorHandler);  
 
+// Start server
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {

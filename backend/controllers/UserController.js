@@ -108,6 +108,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.email = req.body.email || user.name;
 
     if (req.body.password) {
+      // we need to hash the password before saving it or we could do it in the model
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(req.body.password, salt);
     }

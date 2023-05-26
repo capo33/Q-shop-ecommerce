@@ -122,6 +122,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
+      message: "Profile updated successfully",
       token,
     });
   } else {

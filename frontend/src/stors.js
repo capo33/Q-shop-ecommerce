@@ -2,7 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { userReducer } from "./redux/reducers/userReducer";
+import {
+  userReducer,
+  userDetailsReducer,
+  userUpdateProfileReducer,
+} from "./redux/reducers/userReducer";
 import { cartReducer } from "./redux/reducers/cartReducers";
 import { productReducer } from "./redux/reducers/productReducers";
 
@@ -11,16 +15,17 @@ const rootReducer = combineReducers({
   products: productReducer,
   cart: cartReducer,
   user: userReducer,
+  userDetails: userDetailsReducer,
+  userUpdateProfile: userUpdateProfileReducer,
 });
 
 const cartItemsFromLoacalStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
-  const userInfoFromLoacalStorage = localStorage.getItem("userInfo")
+const userInfoFromLoacalStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
-
 
 // Initial State
 const initialState = {

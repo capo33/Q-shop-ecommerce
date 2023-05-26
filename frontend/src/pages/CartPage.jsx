@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation , useNavigate, redirect, Navigate, Outlet} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Row,
@@ -16,10 +16,12 @@ import { addToCart, removeFromCart } from "../redux/actions/cartAction";
 
 const CartPage = () => {
   const { cartItems } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.user);
 
   const { id } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
   console.log(id, qty);
@@ -43,11 +45,11 @@ const CartPage = () => {
 
   const checkoutHandler = () => {
     console.log("checkout");
-    // if (userInfo) {
-    //   navigate("/shipping");
-    // } else {
-    //   navigate("/login");
-    // }
+    if (userInfo) {
+      navigate("/shipping");
+    } else {
+      navigate("/login?redirect=shipping");
+     }
   };
 
   const removeFromCartHandler = (id) => {

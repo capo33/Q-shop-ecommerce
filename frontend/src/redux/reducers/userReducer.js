@@ -38,3 +38,73 @@ export const userReducer = (state = initialState, action) => {
       return state;
   }
 }
+
+const userDetailsInitialState = {
+  user: {},
+  loading: false,
+  error: null,
+};
+
+export const userDetailsReducer = (state = userDetailsInitialState, action) => {
+  switch (action.type) {
+    case types.USER_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.USER_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.payload,
+      };
+    case types.USER_DETAILS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const userUpdateProfileInitialState = {
+  userInfo: {},
+  loading: false,
+  error: null,
+  success: false,
+};
+
+export const userUpdateProfileReducer = (state = userUpdateProfileInitialState, action) => {
+  switch (action.type) {
+    case types.USER_UPDATE_PROFILE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.USER_UPDATE_PROFILE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        userInfo: action.payload,
+      };
+    case types.USER_UPDATE_PROFILE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case types.USER_UPDATE_PROFILE_RESET:
+      return {
+        ...state,
+        userInfo: {},
+        loading: false,
+        error: null,
+        success: false,
+      };
+    default:
+      return state;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
 
 import Message from "../components/Message";
@@ -16,17 +16,20 @@ const LoginPage = () => {
   console.log(userInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirect =   location.search.split("=")[1]  
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate("/" + redirect);
     }
-  }, [navigate, userInfo]);
+  }, [navigate, userInfo, redirect]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser(email, password));
-   };
+  };
 
   return (
     <FormContainer>

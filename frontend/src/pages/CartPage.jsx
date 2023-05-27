@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams, useLocation , useNavigate, redirect, Navigate, Outlet} from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Row,
@@ -49,7 +49,7 @@ const CartPage = () => {
       navigate("/shipping");
     } else {
       navigate("/login?redirect=shipping");
-     }
+    }
   };
 
   const removeFromCartHandler = (id) => {

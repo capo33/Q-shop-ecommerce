@@ -31,11 +31,16 @@ const shippingAddressFromLoacalStorage = localStorage.getItem("shippingAddress")
   ? JSON.parse(localStorage.getItem("shippingAddress"))
   : {};
 
+const paymentMethodFromLoacalStorage = localStorage.getItem("paymentMethod")
+  ? JSON.parse(localStorage.getItem("paymentMethod"))
+  : "";
+
 // Initial State
 const initialState = {
   cart: {
     cartItems: cartItemsFromLoacalStorage,
     shippingAddress: shippingAddressFromLoacalStorage,
+    paymentMethod: paymentMethodFromLoacalStorage,
   },
   user: { userInfo: userInfoFromLoacalStorage },
 };

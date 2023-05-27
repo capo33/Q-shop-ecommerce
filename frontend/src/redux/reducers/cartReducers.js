@@ -3,6 +3,7 @@ import * as types from "../constants/cartConstants";
 const initialState = {
   cartItems: [],
   shippingAddress: {},
+  paymentMethod: "",
 };
 
 // Add to cart
@@ -40,6 +41,12 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         shippingAddress: action.payload,
+      };
+
+    case types.CART_SAVE_PAYMENT_METHOD:  
+      return {
+        ...state,
+        paymentMethod: action.payload,
       };
 
     default:

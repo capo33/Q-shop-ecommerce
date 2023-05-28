@@ -5,13 +5,22 @@ import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
-// import { createdOrder } from "../redux/actions/orderAction";
+import { createOrder } from "../redux/actions/orderActions";
 
 const PlaceOrderPage = () => {
-  const cart = useSelector((state) => state.cart);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+
+  useEffect(() => {
+    // check if order is created successfully and redirect to order details page
+    if (success) {
+      navigate(`/order/${order?._id}`);
+    }
+    // eslint-disable-next-line
+  }, [success, navigate, order]);
 
   // Calculate prices
   const addDecimals = (num) => {
@@ -31,6 +40,21 @@ const PlaceOrderPage = () => {
     Number(cart.shippingPrice) +
     Number(cart.taxPrice)
   ).toFixed(2);
+
+  const placeOrderHandler = () => {
+    console.log("order :>> ", order);
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
+  };
 
   return (
     <>
@@ -116,14 +140,14 @@ const PlaceOrderPage = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                {/* {error && <Message variant='danger'>{error}</Message>} */}
+                {error && <Message variant='danger'>{error}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button
                   type='button'
                   className='btn-block'
                   disabled={cart.cartItems === 0}
-                  // onClick={handlePlaceOrder}
+                  onClick={placeOrderHandler}
                 >
                   Place Order
                 </Button>

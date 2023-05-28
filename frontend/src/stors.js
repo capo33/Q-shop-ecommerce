@@ -9,7 +9,7 @@ import {
 } from "./redux/reducers/userReducer";
 import { cartReducer } from "./redux/reducers/cartReducers";
 import { productReducer } from "./redux/reducers/productReducers";
-import { orderCreateReducer } from "./redux/reducers/orderReducers";
+import { orderCreateReducer ,orderDetailsReducer} from "./redux/reducers/orderReducers";
 
 // Reducers
 const rootReducer = combineReducers({
@@ -19,6 +19,7 @@ const rootReducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
 });
 
 const cartItemsFromLoacalStorage = localStorage.getItem("cartItems")

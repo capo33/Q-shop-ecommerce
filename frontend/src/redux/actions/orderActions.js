@@ -40,4 +40,37 @@ export const createOrder = (order) => async (dispatch, getState) => {
   }
 };
 
-// dispatch({
+export const getOrderDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: orderConstants.ORDER_DETAILS_REQUEST,
+    });
+
+    const {
+      user: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const {
+      data: { data },
+    } = await axios.get(`${API}/api/v1/orders/${id}`, config);
+
+    dispatch({
+      type: orderConstants.ORDER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: orderConstants.ORDER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}

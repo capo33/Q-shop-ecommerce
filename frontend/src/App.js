@@ -21,16 +21,16 @@ function App() {
       <main className='py-3'>
         <Container>
           <Routes>
-            <Route path='/order/:id' element={<OrderPage />} />
+            {/* <Route path='/order/:id' element={<OrderPage />} />
             <Route path='/shipping' element={<ShippingPage />} />
             <Route path='/payment' element={<PaymentPage />} />
             <Route path='/placeorder' element={<PlaceOrderPage />} />
-            <Route path='/login' element={<LoginPage />} />
-            <Route path='/register' element={<RegisterPage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/product/:id' element={<ProductPage />} />
-            <Route path='/cart/:id?' element={<CartPage />} />
+            <Route path='/cart/:id?' element={<CartPage />} /> */}
             <Route path='/' element={<HomePage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
           </Routes>
         </Container>
       </main>

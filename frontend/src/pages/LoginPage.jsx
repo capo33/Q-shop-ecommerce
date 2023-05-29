@@ -6,29 +6,30 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { loginUser } from "../redux/actions/userAction";
+import { loginUser } from "../redux/feature/auth/authSlice";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { userInfo, loading, error } = useSelector((state) => state.user);
+  const { userInfo, loading, error } = useSelector((state) => state.auth);
   console.log(userInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const redirect =   location.search.split("=")[1]  
+  const redirect = location.search.split("=")[1];
 
   useEffect(() => {
     if (userInfo) {
-      navigate(`/${redirect ? redirect : ""} ` );
+      navigate(`/${redirect ? redirect : ""} `);
     }
   }, [navigate, userInfo, redirect]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser(email, password));
+    const userData = { email, password };
+    dispatch(loginUser({ userData, navigate }));
   };
 
   return (

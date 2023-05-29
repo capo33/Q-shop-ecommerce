@@ -6,7 +6,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { registerUser } from "../redux/actions/userAction";
+import { registerUser } from "../redux/feature/auth/authSlice";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -15,7 +15,7 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
 
-  const { userInfo, loading, error } = useSelector((state) => state.user);
+  const { userInfo, loading, error } = useSelector((state) => state.auth);
   console.log(userInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,7 +31,8 @@ const RegisterPage = () => {
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      dispatch(registerUser(name, email, password));
+      const userData = { name, email, password };
+      dispatch(registerUser({ userData, navigate }));
     }
   };
 

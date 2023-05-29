@@ -26,11 +26,11 @@ function App() {
             <Route path='/payment' element={<PaymentPage />} />
             <Route path='/placeorder' element={<PlaceOrderPage />} />
             <Route path='/profile' element={<ProfilePage />} />
-            <Route path='/product/:id' element={<ProductPage />} />
             <Route path='/cart/:id?' element={<CartPage />} /> */}
             <Route path='/' element={<HomePage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
+            <Route path='/product/:id' element={<ProductPage />} />
           </Routes>
         </Container>
       </main>

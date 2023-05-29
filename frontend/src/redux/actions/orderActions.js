@@ -13,7 +13,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
     const {
       user: { userInfo },
     } = getState();
-
+ 
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -29,13 +29,21 @@ export const createOrder = (order) => async (dispatch, getState) => {
       type: orderConstants.ORDER_CREATE_SUCCESS,
       payload: data,
     });
+
+    localStorage.removeItem("cartItems");
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      // dispatch(logout())
+      console.log("Not authorized, token failed");
+    }
+
     dispatch({
       type: orderConstants.ORDER_CREATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -73,4 +81,4 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
           : error.message,
     });
   }
-}
+};

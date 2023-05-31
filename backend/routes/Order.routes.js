@@ -1,10 +1,10 @@
 import express from "express";
 import { addOrderItems, getOrderById } from "../controllers/OrderController.js";
-import { authMiddleware  } from "../middlewares/authMiddleware.js";
+import { protect  } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, addOrderItems);
-router.get("/:id", authMiddleware, getOrderById);
+router.get("/:id", protect, getOrderById);
+router.post("/", protect, addOrderItems);
 
 export default router;

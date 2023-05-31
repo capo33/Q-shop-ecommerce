@@ -6,31 +6,12 @@ import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder } from "../redux/actions/orderActions";
-import axios from "axios";
 
 const PlaceOrderPage = () => {
+  const cart = useSelector((state) => state.cart);
+ 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const cart = useSelector((state) => state.cart);
-  const {userInfo} = useSelector((state) => state.user);
-  console.log('userInfo :>> ', userInfo);
-  const orderCreate = useSelector((state) => state.orderCreate);
-  const { order, success, error } = orderCreate;
-
-  if (!cart.shippingAddress.address) {  
-    navigate("/shipping");
-  } else if (!cart.paymentMethod) {
-    navigate("/payment");
-  }
-
-  useEffect(() => {
-    // check if order is created successfully and redirect to order details page
-    if (success) {
-      navigate(`/order/${order?._id}`);
-    }
-    // eslint-disable-next-line
-  }, [success, navigate, order]);
 
   // Calculate prices
   const addDecimals = (num) => {
@@ -50,11 +31,20 @@ const PlaceOrderPage = () => {
     Number(cart.shippingPrice) +
     Number(cart.taxPrice)
   ).toFixed(2);
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+  
+  useEffect(() => {
+    // check if order is created successfully and redirect to order details page
+    if (success) {
+      navigate(`/order/${order?._id}`);
+    }
+    // eslint-disable-next-line
+  }, [success, navigate]);
 
   const placeOrderHandler = () => {
-    console.log("order :>> ", order);
-    const postOrder = async () => {
-      const { data } = await axios.post("http://localhost:5000/api/v1/orders", {
+    dispatch(
+      createOrder({
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
@@ -62,31 +52,9 @@ const PlaceOrderPage = () => {
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
-      } , {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      });
-      console.log("data :>> ", data?._id);
-      navigate(`/order/${data?._id}`);
+      })
+    );
     };
-    postOrder();
-
-    navigate(`/order/${order?._id}`);
-
-    // dispatch(
-    //   createOrder({
-    //     orderItems: cart.cartItems,
-    //     shippingAddress: cart.shippingAddress,
-    //     paymentMethod: cart.paymentMethod,
-    //     itemsPrice: cart.itemsPrice,
-    //     shippingPrice: cart.shippingPrice,
-    //     taxPrice: cart.taxPrice,
-    //     totalPrice: cart.totalPrice,
-    //   })
-    // );
-  };
 
   return (
     <>

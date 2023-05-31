@@ -13,7 +13,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
     const {
       user: { userInfo },
     } = getState();
- 
+
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -22,12 +22,14 @@ export const createOrder = (order) => async (dispatch, getState) => {
     };
 
     const {
-      data: { data },
+      data: {
+        data: { data: newOrder },
+      },
     } = await axios.post(`${API}/api/v1/orders`, order, config);
 
     dispatch({
       type: orderConstants.ORDER_CREATE_SUCCESS,
-      payload: data,
+      payload: newOrder,
     });
 
     localStorage.removeItem("cartItems");

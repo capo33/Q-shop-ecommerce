@@ -12,17 +12,19 @@ import {
 } from "react-bootstrap";
 
 import Rating from "../components/Rating";
-import { getProductDetails } from "../redux/feature/product/productSlice";
+import { getProductDetails } from "../redux/actions/productAction";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { addToCart } from "../redux/actions/cartAction";
 
 const ProductPage = () => {
-  const [qty, setQty] = useState(1);
-  const { product, loading, error } = useSelector((state) => state.products);
-  const { data } = product;
-
   const { id } = useParams();
+  
+  const [qty, setQty] = useState(1);
+
+  const { product, loading, error } = useSelector((state) => state.products);
+
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,7 +33,7 @@ const ProductPage = () => {
   }, [id, dispatch]);
 
   const addTocartHandler = () => {
-    dispatch(addToCart(id, qty));
+     dispatch(addToCart(id, qty));
     navigate(`/cart/${id}?qty=${qty}`);
   };
   return (
@@ -47,24 +49,24 @@ const ProductPage = () => {
         <Row>
           <Col md={6}>
             <Image
-              src={data?.image}
-              alt={data?.name}
+              src={product.image}
+              alt={product.name}
               fluid // fluid keeps the image inside the container
             />
           </Col>
           <Col md={3}>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h3>{data?.name}</h3>
+                <h3>{product.name}</h3>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Rating
-                  value={data?.rating}
-                  text={`${data?.numReviews} reviews`}
+                  value={product.rating}
+                  text={`${product.numReviews} reviews`}
                 />
               </ListGroup.Item>
-              <ListGroup.Item>Price: ${data?.price}</ListGroup.Item>
-              <ListGroup>Description: {data?.description}</ListGroup>
+              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+              <ListGroup>Description: {product.description}</ListGroup>
             </ListGroup>
           </Col>
           <Col md={3}>
@@ -74,7 +76,7 @@ const ProductPage = () => {
                   <Row>
                     <Col>Price:</Col>¨
                     <Col>
-                      <strong>${data?.price}</strong>
+                      <strong>${product.price}</strong>
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -84,7 +86,7 @@ const ProductPage = () => {
                   <Row>
                     <Col>Status:</Col>
                     <Col>
-                      {data?.data?.countInStock > 0
+                      {product.data?.countInStock > 0
                         ? "In Stock"
                         : "Out Of Stock"}
                     </Col>
@@ -117,7 +119,7 @@ const ProductPage = () => {
                 <Button
                   className='btn btn-block m-3'
                   type='button'
-                  disabled={data?.data?.countInStock === 0}
+                  disabled={product.data?.countInStock === 0}
                   onClick={addTocartHandler}
                 >
                   Add To Cart

@@ -6,11 +6,13 @@ import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
- import { getOrderDetails } from "../redux/actions/orderActions";
+import CheckoutSteps from "../components/CheckoutSteps";
+import { getOrderDetails } from "../redux/actions/orderActions";
  
-const OrderPage = () => {
+const OrderScreen = () => {
   const { id } = useParams();
   console.log("id", id);
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const orderDetails = useSelector((state) => state.orderDetails);
@@ -148,4 +150,4 @@ const OrderPage = () => {
   );
 };
 
-export default OrderPage;
+export default OrderScreen;

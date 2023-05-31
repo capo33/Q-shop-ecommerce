@@ -1,11 +1,11 @@
-import asyncHandler from "express-async-handler";
+import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
 
 import UserModel from "../models/User.js";
 import generateToken from "../utils/generrateToken.js";
 
 // @desc    Register a new user
-// @route   POST /api/v1/users
+// @route   POST /api/v1/users/register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -35,14 +35,14 @@ const registerUser = asyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
-  const token = generateToken(user._id);
+  // Generate Token & Cookie
+  generateToken(res, user._id);
 
   res.status(201).json({
     _id: user._id,
     name: user.name,
     email: user.email,
     isAdmin: user.isAdmin,
-    token,
   });
 });
 
@@ -66,14 +66,29 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 
-  const token = generateToken(existingUser._id);
+  // Generate Token & Cookie
+  generateToken(res, existingUser._id);
 
   res.status(200).json({
-    _id:  existingUser._id,
+    _id: existingUser._id,
     name: existingUser.name,
     email: existingUser.email,
     isAdmin: existingUser.isAdmin,
-    token,
+  });
+});
+
+// @desc    Logout a user / clear cookie
+// @route   GET /api/v1/users/logout
+// @access  Private
+const logoutUser = asyncHandler(async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0), // expires immediately
+  });
+
+  // Send response
+  res.status(200).json({
+    message: "Logged out successfully",
   });
 });
 
@@ -81,7 +96,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   GET /api/v1/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  // GEt user id from authMiddleware (protect)
+  // no need to pass id because we are getting user id from authMiddleware (protect)
   const user = await UserModel.findById(req.user._id);
 
   if (user) {
@@ -115,7 +130,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
     const updatedUser = await user.save();
 
-    const token = generateToken(updatedUser._id);
+    // Generate Token & Cookie
+    generateToken(res, updatedUser._id);
 
     res.status(200).json({
       _id: updatedUser._id,
@@ -123,7 +139,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
       message: "Profile updated successfully",
-      token,
     });
   } else {
     res.status(404);
@@ -131,4 +146,45 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, loginUser, getUserProfile, updateUserProfile };
+// @desc    Get all users
+// @route   GET /api/v1/users
+// @access  Private (admin only)
+const getUsers = asyncHandler(async (req, res) => {
+  res.send("success");
+});
+
+// @desc    Get a user by id
+// @route   GET /api/v1/users/:id
+// @access  Private (admin only)
+const getUserById = asyncHandler(async (req, res) => {
+  res.send("success");
+});
+
+// @desc    Update a user
+// @route   PUT /api/v1/users/:id
+// @access  Private (admin only)
+const updateUser = asyncHandler(async (req, res) => {
+  res.send("success");
+});
+
+// @desc    Delete a user
+// @route   DELETE /api/v1/users/:id
+// @access  Private (admin only)
+const deleteUser = asyncHandler(async (req, res) => {
+  res.send("success");
+});
+
+export {
+  // public routes
+  registerUser,
+  loginUser,
+  // private routes
+  getUserProfile,
+  updateUserProfile,
+  logoutUser,
+  // admin routes
+  getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+};

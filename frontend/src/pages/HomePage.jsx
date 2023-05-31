@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 
 import Product from "../components/Product";
-import { getProducts } from "../redux/feature/product/productSlice";
+import { getProducts } from "../redux/actions/productAction";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
@@ -11,8 +11,7 @@ const Home = () => {
   const { products, loading, error } = useSelector(
     (state) => state.products
   );
-  console.log(products );
- 
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,12 +27,12 @@ const Home = () => {
         <Message variant={"danger"}>{error}</Message>
       ) : null}
       <Row>
-        {products?.data?.map((product) => (
+        {products.map((product) => (
           <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
             <Product product={product} />
           </Col>
         ))}
-       </Row>
+      </Row>
     </>
   );
 };

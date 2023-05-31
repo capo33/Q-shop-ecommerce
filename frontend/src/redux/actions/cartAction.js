@@ -8,7 +8,7 @@ const API = "http://localhost:5000";
 export const addToCart = (id, qty) => async (dispatch, getState) => {
   // 1- Get the data of the product
   const { data } = await axios.get(`${API}/api/v1/products/${id}`);
-  console.log(data?.data);
+  // console.log(data?.data);
   // 2- Dispatch the action
   dispatch({
     type: CART_ADD_ITEM,
